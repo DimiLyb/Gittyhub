@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^$', 'mainapp.views.index'),
     url(r'^mainapp/', include('mainapp.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^thanks/', 'mainapp.views.thanks'),
 ]
