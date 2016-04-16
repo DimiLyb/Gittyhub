@@ -3,14 +3,16 @@ from django.http import HttpResponse, HttpResponseRedirect
 import urllib.request, json
 
 from .forms import NameForm
-from .repo import getrepo
+from .repo import getrepo, getjson
 
 def index(request):
     #return HttpResponse("Hello, world. You're at the GittyHub index.")
     if request.method == 'POST':
         form = NameForm(request.POST)
         if form.is_valid():
-            return render(request, 'anwser.html', {'form': form, 'test': "lol"})
+            r = getrepo(form.cleaned_data['getjson'])
+            #data = getjson(r)
+            return render(request, 'anwser.html', {'form': form, 'test': r})
             #return HttpResponse(getrepo(form.cleaned_data['getjson']))
     else:
         form = NameForm()

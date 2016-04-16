@@ -1,0 +1,12 @@
+{{test|length}}
+
+<ul>
+{% for proj in test %}
+    <li>{{ proj.id }}</li>
+    <li>{{ proj.name }}</li>
+    <li>{{ proj.owner.login }}</li>
+    <li>{{ proj.html_url }}</li>
+    
+    <br>
+{% endfor %}
+</ul>
