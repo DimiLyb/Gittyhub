@@ -1,10 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+import urllib.request, json
 
 from .forms import NameForm
+from .repo import getrepo
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the GittyHub index.")
+    #return HttpResponse("Hello, world. You're at the GittyHub index.")
+    if request.method == 'POST':
+        form = NameForm(request.POST)
+        if form.is_valid():
+            return render(request, 'anwser.html', {'form': form, 'test': "lol"})
+            #return HttpResponse(getrepo(form.cleaned_data['getjson']))
+    else:
+        form = NameForm()
+        
+    return render(request, 'repo.html', {'form': form , 'test': "lol"})
+
 
 
 
@@ -13,23 +25,14 @@ def index(request):
 
 #testing stuff
 def thanks(request):
-    return HttpResponse("Hello, world. You're at the GittyHub index.")
+    return HttpResponse(getrepo("https://api.github.com/users/DimiLyb"))
 
 def get_name(request):
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = NameForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            #return HttpResponseRedirect('/thanks/')
-            return HttpResponse(form.cleaned_data['your_name'])
-
-    # if a GET (or any other method) we'll create a blank form
+            return HttpResponse(getrepo(form.cleaned_data['getjson']))
     else:
         form = NameForm()
 
-    return render(request, 'name.html', {'form': form})
+    return render(request, 'repo.html', {'form': form})
