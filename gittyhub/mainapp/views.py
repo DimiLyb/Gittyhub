@@ -12,7 +12,7 @@ def index(request):
         if form.is_valid():
             r = getrepo(form.cleaned_data['getjson'])
             #data = getjson(r)
-            return render(request, 'anwser.html', {'form': form, 'test': r})
+            return render(request, 'anwser.html', {'test': r })
             #return HttpResponse(getrepo(form.cleaned_data['getjson']))
     else:
         form = NameForm()

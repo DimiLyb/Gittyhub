@@ -1,11 +1,21 @@
-{{test|length}}
+number of reops: {{test|length}}
 
 <ul>
 {% for proj in test %}
-    <li>{{ proj.id }}</li>
-    <li>{{ proj.name }}</li>
-    <li>{{ proj.owner.login }}</li>
-    <li>{{ proj.html_url }}</li>
+    <li><h2>{{ proj.name }}</h2> {{ proj.id }}</li>  
+    <li>Private: {{ proj.private }}</li>
+    <li>repo URL: <a href={{ proj.html_url }} target="_blank">{{ proj.html_url }}</a></li>
+    <li>description: {{ proj.description }}</li>
+    <li>created: {{ proj.created_at }}</li>
+    <li>updated: {{ proj.updated_at }}</li>
+    <li>pushed: {{ proj.pushed_at }}</li>
+    <li>language: {{ proj.language }}</li>
+    <li>default_branch: <a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">{{ proj.default_branch }}</a></li></li>
+    
+    
+    <a href={{ proj.html_url }} target="_blank">
+    <li>owner: <img src={{ proj.owner.avatar_url }} alt="avatar" style="width:50px;height:50px;"> {{ proj.owner.login }}</li>
+    </a>
     
     <br>
 {% endfor %}
