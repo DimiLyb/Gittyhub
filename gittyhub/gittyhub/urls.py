@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'^mainapp/', include('mainapp.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^thanks/', 'mainapp.views.thanks'),
+    url(r'^download/(?P<owner>[-\w]+)/(?P<repo>\w+)/(?P<fork>\w+)/$', 'mainapp.views.download'),
+    #url(r'^partner/(?P<author>[-\w]+)/(?P<video>\w+)/(?P<related>\w+)/$', 'video_player'),
 ]

@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 import urllib.request, json
 
 from .forms import NameForm
-from .repo import getrepo, getjson
+from .repo import getrepo, getjson, getfile
 
 def index(request):
     #return HttpResponse("Hello, world. You're at the GittyHub index.")
@@ -19,7 +19,13 @@ def index(request):
         
     return render(request, 'repo.html', {'form': form , 'test': "lol"})
 
-
+def download(request, owner, repo, fork):
+    url = "https://github.com/" + owner + "/" + repo + "/archive/" + fork + ".zip" 
+    name = repo + "_" + owner + ".zip"
+    getfile(url, name)
+    return render(request, 'download.html', {'repo': repo, 'owner': owner, 'fork': fork})
+    #getfile()
+    
 
 
 
