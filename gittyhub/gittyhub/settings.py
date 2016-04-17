@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
-import os
+import os 
 
 PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 

@@ -2,6 +2,8 @@ from django import forms
 import urllib.request, json, shutil, os, zipfile
 
 def getrepo(valu):
+    base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
+    request.add_header("Authorization", "Basic %s" % base64string)
     with urllib.request.urlopen(valu) as url: s = url.read()
     r = getjson(s)
     return r
