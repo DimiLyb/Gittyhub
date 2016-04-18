@@ -1,0 +1,12 @@
+number of commits: {{commit|length}}
+
+<ul>
+{% for com in commit %}
+    <li>sha: {{ com.sha }}</li>
+    <li>message: {{ com.commit.message }}</li>
+    <li>author: {{ com.commit.author.name }}</li>
+    <li>date: {{ com.commit.author.date }}</li>
+    
+    <br>
+{% endfor %}
+</ul>

@@ -10,14 +10,9 @@ number of reops: {{test|length}}
     <li>updated: {{ proj.updated_at }}</li>
     <li>pushed: {{ proj.pushed_at }}</li>
     <li>language: {{ proj.language }}</li>
-    <li>default_branch: <a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">{{ proj.default_branch }}</a></li></li>
-    <li>number of commits: {{commit|length}}</li>
-       <ul>
-       {% for com in commit %}
-        <li>sha: {{ com.sha }}</li>
-        <li>message: {{ com.message }}</li>
-       {% endfor %}
-       </ul>
+    <li>default_branch: <a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">{{ proj.default_branch }}</a></li>
+    <li>commits: <a href="commit/{{ proj.full_name }}" target="_blank">commits</a></li></li>
+
     
     <a href={{ proj.html_url }} target="_blank">
     <li>owner: <img src={{ proj.owner.avatar_url }} alt="avatar" style="width:50px;height:50px;"> {{ proj.owner.login }}</li>
