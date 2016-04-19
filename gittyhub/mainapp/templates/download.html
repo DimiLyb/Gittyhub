@@ -1,1 +1,12 @@
-Download has started from {{owner}}'s project {{repo}} the {{fork}} version.
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+<div class="jumbotron">
+<h1>GittyHub</h1>
+</div>
+
+<div class="alert alert-success">
+ <p>Download has started from {{owner}}'s project {{repo}} the {{fork}} version.</p>
+</div>

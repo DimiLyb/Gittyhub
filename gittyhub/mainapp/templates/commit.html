@@ -1,12 +1,37 @@
-number of commits: {{commit|length}}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
 
+<div class="jumbotron">
+<h1>GittyHub</h1>
+<p>number of commits: {{commit|length}}</p>
+</div>
+
+<div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+
+<h2> <a href={{ proj.html_url }} target="_blank"> {{ repo }} </a> 
+    <small> 
+        <a href={{ proj.html_url }} target="_blank"> 
+            {{ owner }} 
+        </a>
+    </small> 
+</h2>
+      </div>
+      <div class="panel-body">
+<div class="container">
 <ul>
-{% for com in commit %}
-    <li>sha: {{ com.sha }}</li>
-    <li>message: {{ com.commit.message }}</li>
-    <li>author: {{ com.commit.author.name }}</li>
-    <li>date: {{ com.commit.author.date }}</li>
-    
+{% for com in commit %}  
+    <p>message: {{ com.commit.message }}</p>
+    <p>author: {{ com.commit.author.name }}</p>
+    <p>date: {{ com.commit.author.date }}</p>
+    <p>sha: {{ com.sha }}</p>
     <br>
 {% endfor %}
 </ul>
+</div>
+</div>
+    </div>
+</div>

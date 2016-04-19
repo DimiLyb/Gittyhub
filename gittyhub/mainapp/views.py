@@ -24,7 +24,7 @@ def index(request):
     else:
         form = NameForm()
         
-    return render(request, 'repo.html', {'form': form , 'test': "lol"})
+    return render(request, 'repo.html', {'form': form})
 
 def download(request, owner, repo, fork):
     url = "https://github.com/" + owner + "/" + repo + "/archive/" + fork + ".zip" 
@@ -36,9 +36,7 @@ def download(request, owner, repo, fork):
 def commit(request, owner, repo):
     urlcommit = "https://api.github.com/repos/" + owner + "/" + repo + "/commits"
     c = getrepo(urlcommit)
-    return render(request, 'commit.html', {'commit': c })
-
-
+    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo })
 
 #testing stuff
 def thanks(request):
