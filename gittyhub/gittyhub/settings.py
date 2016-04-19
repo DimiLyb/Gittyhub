@@ -131,6 +131,11 @@ TEMPLATE_DIRS = (
     PROJECT_PATH + '/templates/',
 )
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+    './static/',
+]
+
 BOOTSTRAP3 = {
 
     # The URL to the jQuery JavaScript file
