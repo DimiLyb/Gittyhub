@@ -2,7 +2,7 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-
+<div style="background: black; padding: 10px 10px 10px 10px;">
 <div class="jumbotron">
     {% load staticfiles %}
 <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
@@ -11,4 +11,6 @@
 
 <div class="alert alert-success">
  <p>Download has started from {{owner}}'s project {{repo}} the {{fork}} version.</p>
+</div>
+<br>
 </div>
