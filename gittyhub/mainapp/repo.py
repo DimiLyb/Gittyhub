@@ -1,5 +1,8 @@
 from django import forms
-import urllib.request, json, shutil, os, zipfile, base64, platform
+import urllib.request, json, shutil, os, zipfile, base64, platform, urllib.response, urllib.parse
+
+from http.client import HTTPSConnection
+from base64 import b64encode
 
 def getrepo(valu):
     with urllib.request.urlopen(valu) as url: s = url.read()

@@ -2,8 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 import urllib.request, json, redis, os
 
-from .forms import NameForm
+from http.client import HTTPSConnection
+from base64 import b64encode
+
+from .forms import NameForm #loginform
 from .repo import getrepo, getjson, getfile
+from .loginform import loginf
 
 
 
@@ -50,3 +54,30 @@ def get_name(request):
         form = NameForm()
 
     return render(request, 'repo.html', {'form': form})
+    
+def login(request): 
+            #c = HTTPSConnection("api.github.com")
+            #user = ""
+            #passw= ""
+            #logi = bytes(user + ':' + passw, 'utf-8')
+            #userAndPass = b64encode(logi).decode("ascii")
+            #headers = { 'Authorization' : 'Basic %s' %  userAndPass, 'User-Agent': user }
+            #c.request('GET', '/', headers=headers)
+            #res = c.getresponse()
+            #data = res.read()  
+            #return HttpResponse(data)
+            
+            userName = ""
+            passWord  = ""
+            top_level_url = "https://api.github.com/orgs/octokit/repos"
+    
+            # create an authorization handler
+            p = urllib.request.HTTPPasswordMgrWithDefaultRealm()
+            p.add_password(None, top_level_url, userName, passWord);
+            auth_handler = urllib.request.HTTPBasicAuthHandler(p)
+            opener = urllib.request.build_opener(auth_handler)
+            urllib.request.install_opener(opener)
+            result = opener.open(top_level_url)
+            messages = result.read()
+            #return messages
+            return HttpResponse(messages)

@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^thanks/', 'mainapp.views.thanks'),
     url(r'^download/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<fork>[\w|\W]+)/$', mainapp_views.download),
     url(r'^commit/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/$', mainapp_views.commit),
+    url(r'^login/', 'mainapp.views.login'),
     #url(r'^partner/(?P<author>[-\w]+)/(?P<video>\w+)/(?P<related>\w+)/$', 'video_player'),
 ]
 
