@@ -2,6 +2,14 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
+
+<script type="text/javascript">
+if(document.getElementById("id_getjson").value == ""){
+document.getElementById("id_getjson3").style.display="block";
+}
+</script>
+
+
 <div style="background: black; padding: 10px 10px 10px 10px;">
 <div class="jumbotron">
 {% load staticfiles %}
@@ -30,3 +38,29 @@
 <br>
 </div>
 example: https://api.github.com/orgs/octokit/repos
+
+<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($){
+    $('.my-form .add-box').click(function(){
+        var n = $('.text-box').length + 1;
+        var box_html = $('<p class="text-box"><label for="box' + n + '">Box <span class="box-number">' + n + '</span></label> <input type="text" name="boxes[]" value="" id="box' + n + '" /> <a href="#" class="remove-box">Remove</a></p>');
+        box_html.hide();
+        $('.my-form p.text-box:last').after(box_html);
+        box_html.fadeIn('slow');
+        return false;
+    });
+});
+</script>
+
+<div class="my-form">
+    <form role="form" method="post">
+        <p class="text-box">
+            <label for="box1">Box <span class="box-number">1</span></label>
+            <input type="text" name="boxes[]" value="" id="box1" />
+            <a class="add-box" href="#">Add More</a>
+        </p>
+        <p><input type="submit" value="Submit" /></p>
+    </form>
+</div>

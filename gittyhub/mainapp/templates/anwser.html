@@ -33,9 +33,12 @@
     <p>Last updated: {{ proj.updated_at }}</p>
     <p>Pushed: {{ proj.pushed_at }}</p>
     <p>Repo id: {{ proj.id }}</p>
+    {% buttons %}
     <div class="btn-group">
     <button type="button" class="btn btn-default"><a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">Download default branch: {{ proj.default_branch }}</a></button>
+    <button type="button" class="btn btn-default"><a href="downloadgit/{{ proj.full_name }}" target="_blank">Download with git</a></button>
     <button type="button" class="btn btn-default"><a href="commit/{{ proj.full_name }}" target="_blank">View commits</a></button>
+    {% endbuttons %}
     <br>
     
     </div>

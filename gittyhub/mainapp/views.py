@@ -6,8 +6,9 @@ from http.client import HTTPSConnection
 from base64 import b64encode
 
 from .forms import NameForm #loginform
-from .repo import getrepo, getjson, getfile
+from .repo import getrepo, getjson, getfile, getgit
 from .loginform import loginf
+from .form2 import MyForm
 
 
 
@@ -23,7 +24,6 @@ def index(request):
             #return HttpResponse(getrepo(form.cleaned_data['getjson']))
     else:
         form = NameForm()
-        
     return render(request, 'repo.html', {'form': form})
 
 def download(request, owner, repo, fork):
@@ -32,11 +32,21 @@ def download(request, owner, repo, fork):
     getfile(url, name)
     return render(request, 'download.html', {'repo': repo, 'owner': owner, 'fork': fork})
     
-    
+def downloadgit(request, owner, repo):
+    url = "https://github.com/" + owner + "/" + repo + ".git" 
+    name = repo + "_" + owner
+    messages = getgit(url, name, owner, repo)
+    return render(request, 'downloadgit.html', {'mess': messages})    
+
 def commit(request, owner, repo):
     urlcommit = "https://api.github.com/repos/" + owner + "/" + repo + "/commits"
     c = getrepo(urlcommit)
     return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo })
+
+
+
+
+
 
 #testing stuff
 def thanks(request):
@@ -79,3 +89,16 @@ def login(request):
             messages = result.read()
             #return messages
             return HttpResponse(messages)
+            
+def myview(request):
+    if request.method == 'POST':
+        form = MyForm(request.POST, extra=request.POST.get('extra_field_count'))
+        if form.is_valid():
+            return HttpResponse("oke")
+    else:
+        form = MyForm()
+    return render(request, "template.html", { 'form': form })
+
+
+    #https://github.com/DimiLyb/Gittyhub.git
+    

@@ -1,5 +1,6 @@
 from django import forms
-import urllib.request, json, shutil, os, zipfile, base64, platform, urllib.response, urllib.parse
+from gittyhub import settings 
+import urllib.request, json, shutil, os, zipfile, base64, platform, urllib.response, urllib.parse, git, sys, os.path, stat
 
 from http.client import HTTPSConnection
 from base64 import b64encode
@@ -18,20 +19,39 @@ def getjson(valu):
 def getfile(url, file_name):
     plat = platform.system()
     filename = ""
-    if plat == "windows":
-        filename = os.path.join('C:/ap/repos', file_name)
-    else:
-        filename = os.path.join('/ap/repos', file_name)
-        
+    filename = os.path.join(settings.BASE_DIR + '/repos/zip_download/', file_name)       
     with urllib.request.urlopen(url) as response, open(filename, 'wb') as out_file:shutil.copyfileobj(response, out_file)
     getunzip(file_name)
     
 def getunzip(file_name):
     plat = platform.system()
     filename = ""
-    if plat == "windows":
-        with zipfile.ZipFile(r'C:\ap\repos\\' + file_name, "r") as z: z.extractall(r'C:\ap\repos\\')
-    else:
-        with zipfile.ZipFile(r'/ap/repos/' + file_name, "r") as z: z.extractall(r'/ap/repos/')
-        
+    with zipfile.ZipFile(settings.BASE_DIR + '/repos/zip_download/' + file_name, "r") as z: z.extractall(settings.BASE_DIR + '/repos/zip_download/')
+        #settings.BASE_DIR + "/repos/zip_download/"
     #with zipfile.ZipFile(r'C:\ap\repos\\' + file_name, "r") as z: z.extractall(r'C:\ap\repos\\')
+    
+def getgit(url, file_name, owner, rep):
+    
+    DIR_NAME = settings.BASE_DIR + "/repos/" +  file_name
+    REMOTE_URL = url
+    message = ["",""]
+    if os.path.isdir(DIR_NAME): 
+            #shutil.rmtree(DIR_NAME, onerror=set_rw)
+            message[0] = "Can't download " + owner + "\'s project " + rep + " with git it already exists. Please remove the old version ."
+            message[1] = "alert alert-danger"
+    else:
+            os.mkdir(DIR_NAME)
+            repo = git.Repo.init(DIR_NAME)
+            origin = repo.create_remote('origin',REMOTE_URL)
+            origin.fetch()
+            origin.pull(origin.refs[0].remote_head)
+            message[0] = "Download has started from " + owner+ "\'s project " + rep + " with git."
+            message[1] = "alert alert-success"
+    return message
+    #https://github.com/octokit/octokit.rb.git
+    
+def set_rw(operation, name, exc):
+    os.chmod(name, stat.S_IWRITE)
+    return True
+
+    #shutil.rmtree('path', onerror=set_rw)

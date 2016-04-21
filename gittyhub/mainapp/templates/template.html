@@ -1,0 +1,35 @@
+{% load staticfiles %}
+<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+{% load bootstrap3 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+{% load staticfiles %}
+<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+<script>
+form_count = $("[name=extra_field_count");
+// get extra form count so we know what index to use for the next item.
+$('.my-form .add-box').click(function() {
+    element = $('<input type="text"/>');
+    element.attr('name', 'extra_field_' + form_count);
+    $('.my-form p.text-box:last').after(element);
+    // build element and append it to our forms container
+
+    form_count ++;
+    $("[name=extra_field_count]").val(form_count);
+    // increment form count so our view knows to populate 
+    // that many fields for validation
+})
+</script>
+<div class="my-form">
+<form>
+<div id="forms">
+    <p class="text-box">
+    {{ form.as_p }}
+    </p>
+</div>
+<button id="add-another">add another</button>
+<a class="add-box" href="#">Add More</a>
+<input type="submit" />
+</form>
+</div>
