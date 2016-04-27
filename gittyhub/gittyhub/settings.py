@@ -196,5 +196,5 @@ BOOTSTRAP3 = {
     },
 }
 
-
+#APPEND_SLASH=False
 

@@ -23,11 +23,13 @@ urlpatterns = [
     url(r'^mainapp/', include('mainapp.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^thanks/', mainapp_views.thanks),
+    
     url(r'^download/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<fork>[\w|\W]+)/$', mainapp_views.download),
     url(r'^commit/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/$', mainapp_views.commit),
-    url(r'^login/', mainapp_views.login),
+    #url(r'^login/', mainapp_views.login),
     #url(r'^partner/(?P<author>[-\w]+)/(?P<video>\w+)/(?P<related>\w+)/$', 'video_player'),
     url(r'^downloadgit/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/$', mainapp_views.downloadgit),
+    #url(r'^repo', mainapp_views.setrepo),
 ]
 
 #url(r'^download/(?P<owner>[-\w]+)/(?P<repo>\w+)/(?P<fork>\w+)/$', 'mainapp.views.download'),

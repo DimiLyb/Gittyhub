@@ -1,14 +1,23 @@
-from django import forms
+#from django.shortcuts import render
+#from django.http import HttpResponse, HttpResponseRedirect
+#from django import forms
+#from http import cookies
+#from http.client import HTTPSConnection
+#from base64 import b64encode
+
+import urllib.request, json, zipfile, git, sys, os.path, requests, shutil, platform
+#os, base64, urllib.response, urllib.parse, stat, 
+
 from gittyhub import settings 
-import urllib.request, json, shutil, os, zipfile, base64, platform, urllib.response, urllib.parse, git, sys, os.path, stat
 
-from http.client import HTTPSConnection
-from base64 import b64encode
 
-def getrepo(valu):
-    with urllib.request.urlopen(valu) as url: s = url.read()
-    r = getjson(s)
-    return r
+def getrepo(valu , request):
+    #with urllib.request.urlopen(valu, auth=requests.auth.HTTPBasicAuth('', '')) as url: s = url.read()
+    #r = getjson(s)
+    login = request.session.get('login')
+    passw = request.session.get('passw')
+    r = requests.get(valu, auth=(login, passw))
+    return r.json
     
     # byte to json
 def getjson(valu):

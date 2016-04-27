@@ -1,7 +1,9 @@
-from django import forms
+from django import forms 
 
 class NameForm(forms.Form):
-    getjson = forms.CharField(label='Add user repo: https://api.github.com/orgs/(user)/repos  ', max_length=100)
+    login = forms.CharField(label='Github username', max_length=100)
+    passw = forms.CharField(max_length=100, widget=forms.PasswordInput,label='Github Password')
+    getjson = forms.URLField(label='Add user repo: https://api.github.com/orgs/(user)/repos  ', max_length=200)
     #getjson2 = forms.CharField(label='Add user repo: https://api.github.com/orgs/(user)/repos  ', max_length=100)
     #getjson3 = forms.CharField(label='Add user repo: https://api.github.com/orgs/(user)/repos  ', max_length=100)
     #getjson4 = forms.CharField(label='Add user repo: https://api.github.com/orgs/(user)/repos  ', max_length=100)

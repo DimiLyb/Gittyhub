@@ -3,10 +3,37 @@
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
 
-<h1>GittyHub</h1>
+<script type="text/javascript">
+if(document.getElementById("id_getjson").value == ""){
+document.getElementById("id_getjson3").style.display="block";
+}
+</script>
 
-<form action="127.0.0.1:8000/login" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="Submit" />
+
+<div style="background: black; padding: 10px 10px 10px 10px;">
+<div class="jumbotron">
+{% load staticfiles %}
+<img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
+<h1>GittyHub</h1>
+</div>
+
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading"> </div>
+  
+   <div class="panel-body">     
+<form action="/" method="post" class="form">
+  {% csrf_token %}
+  {% bootstrap_form form layout='inline' %}
+  {% buttons %}
+    <button type="submit" class="btn btn-primary">
+      {% bootstrap_icon "star" %} Submit
+    </button>
+  {% endbuttons %}
 </form>
+    </div>
+    </div>
+    </div>
+<br>
+</div>
