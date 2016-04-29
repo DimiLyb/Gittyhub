@@ -2,17 +2,12 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-
-<script type="text/javascript">
-if(document.getElementById("id_getjson").value == ""){
-document.getElementById("id_getjson3").style.display="block";
-}
-</script>
+{% load staticfiles %}
+<link rel="shortcut icon" href="{%  static 'gitty.png' %}">
 
 
 <div style="background: black; padding: 10px 10px 10px 10px;">
 <div class="jumbotron">
-{% load staticfiles %}
 <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
 <h1>GittyHub</h1>
 </div>

@@ -10,7 +10,6 @@ import json
 #from http import cookies
 #from http.client import HTTPSConnection
 #from base64 import b64encode
-#from .form2 import MyForm
 
 def index(request): 
     mylist = []
@@ -68,7 +67,11 @@ def index(request):
             
         if 'getrepo' in request.POST: # load repo list
             if mylist:
-                r = getrepo(mylist[0], request)
+                r = []
+                for item in mylist:
+                    r.append(getrepo(item, request))
+                    
+                #r = getrepo(mylist[0], request)
                 return render(request, 'anwser.html', {'test': r })
             else:
                  return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
@@ -164,16 +167,6 @@ def login(request):
     else:
         form = loginf()
     return render(request, 'login.html', {'form': form})
-"""
-"""           
-def myview(request):
-    if request.method == 'POST':
-        form = MyForm(request.POST, extra=request.POST.get('extra_field_count'))
-        if form.is_valid():
-            return HttpResponse("oke")
-    else:
-        form = MyForm()
-    return render(request, "template.html", { 'form': form })
 """
 
     #https://github.com/DimiLyb/Gittyhub.git

@@ -59,7 +59,7 @@ ROOT_URLCONF = 'gittyhub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [PROJECT_PATH + '/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -127,9 +127,9 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = PROJECT_PATH + '/media/'
 
-TEMPLATE_DIRS = (
-    PROJECT_PATH + '/templates/',
-)
+#TEMPLATE_DIRS = (
+#    PROJECT_PATH + '/templates/',
+#)
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

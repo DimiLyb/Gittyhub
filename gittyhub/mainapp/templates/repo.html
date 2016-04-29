@@ -4,17 +4,12 @@
 {% bootstrap_messages %}
 {% load staticfiles %}
 <script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
+<link rel="shortcut icon" href="{%  static 'gitty.png' %}">
 
-<script type="text/javascript">
-if(document.getElementById("id_getjson").value == ""){
-document.getElementById("id_getjson3").style.display="block";
-}
-</script>
 
 
 <div style="background: black; padding: 10px 10px 10px 10px;">
-<div class="jumbotron">
-    {% load staticfiles %}
+<div class="jumbotron">   
     <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
     <h1>GittyHub</h1>
 </div>
@@ -96,4 +91,4 @@ document.getElementById("id_getjson3").style.display="block";
 
 <br>
 </div>
-example: https://api.github.com/orgs/octokit/repos
+example: https://api.github.com/repos/octokit/octokit.rb
