@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^mainapp/', include('mainapp.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^thanks/', mainapp_views.thanks),
-    
+    #url(r'^my/', mainapp_views.myview),
     url(r'^download/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<fork>[\w|\W]+)/$', mainapp_views.download),
     url(r'^commit/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/$', mainapp_views.commit),
     #url(r'^login/', mainapp_views.login),

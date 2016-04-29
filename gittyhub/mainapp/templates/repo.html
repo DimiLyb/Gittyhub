@@ -2,6 +2,8 @@
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
+{% load staticfiles %}
+<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
 
 <script type="text/javascript">
 if(document.getElementById("id_getjson").value == ""){
@@ -12,55 +14,86 @@ document.getElementById("id_getjson3").style.display="block";
 
 <div style="background: black; padding: 10px 10px 10px 10px;">
 <div class="jumbotron">
-{% load staticfiles %}
-<img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
-<h1>GittyHub</h1>
+    {% load staticfiles %}
+    <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
+    <h1>GittyHub</h1>
 </div>
 
 
 <div class="panel-group">
     <div class="panel panel-default">
-        <div class="panel-heading"> </div>
-  
-   <div class="panel-body">     
-<form action="/" method="post" class="form">
-  {% csrf_token %}
-  {% bootstrap_form form layout='inline' %}
-  {% buttons %}
-    <button type="submit" class="btn btn-primary">
-      {% bootstrap_icon "star" %} Submit
-    </button>
-  {% endbuttons %}
-</form>
+        <div class="panel-heading"> <h3>Add repo's from github</h3></div>
+        <div class="panel-body">     
+            <form action="/" method="POST" class="form">    
+                {% csrf_token %}
+                {% bootstrap_form form layout='inline' %}
+                {% buttons %}
+                    <button type="submit" name="add" class="btn btn-primary">
+                        {% bootstrap_icon "plus" %} add
+                    </button>
+                {% endbuttons %}
+            </form>
+            <br>
+            <u><h4>List of repo's</h4></u>
+            {% for myl in mylist %}  
+                    <ul>{{myl}}</ul>
+            {% endfor %}
+            <br>
+            <form action="/" method="POST" class="form">
+                {% csrf_token %}
+                {% buttons %}
+                    <div class="btn-group">
+                    <button type="submit" name="clean" class="btn btn-danger">
+                        {% bootstrap_icon "remove" %} Reset list
+                    </button>
+                    <button type="submit" name="pop" class="btn btn-warning">
+                        {% bootstrap_icon "remove" %} remove last entry
+                    </button>
+                    <button type="submit" name="getrepo" class="btn btn-primary">
+                        {% bootstrap_icon "ok" %} Get repo's
+                    </button>
+                    </div>
+                {% endbuttons %}
+            </form>
+        </div>
     </div>
+</div>
+<br>
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3> Login to github</h3> </div>
+        <div class="panel-body">  
+             {% if err %}
+             <div class="{{err.1}}">
+                <p>{{err.0}}.</p>
+             </div>
+             {% endif %}
+             {% if err.0 != "Your loged in" %}
+             <form action="/" method="POST" class="log">
+                {% csrf_token %}
+                {% bootstrap_form log layout='inline' %}
+                {% buttons %}
+                    <button type="submit" name="submit" class="btn btn-primary">
+                        {% bootstrap_icon "log-in" %} login
+                    </button>
+                {% endbuttons %}
+             </form>
+             {% endif %}
+             {% if err.0 == "Your loged in" %}
+             <form action="/" method="POST" class="log">
+                {% csrf_token %}
+                {% buttons %}
+                    <button type="submit" name="logout" class="btn btn-warning">
+                        {% bootstrap_icon "log-out" %} logout
+                    </button>
+                {% endbuttons %}
+             </form>
+             {% endif %}
+             
+        </div>
     </div>
-    </div>
+</div>
+
 <br>
 </div>
 example: https://api.github.com/orgs/octokit/repos
-
-<script type="text/javascript" src="//code.jquery.com/jquery-latest.js"></script>
-
-<script type="text/javascript">
-jQuery(document).ready(function($){
-    $('.my-form .add-box').click(function(){
-        var n = $('.text-box').length + 1;
-        var box_html = $('<p class="text-box"><label for="box' + n + '">Box <span class="box-number">' + n + '</span></label> <input type="text" name="boxes[]" value="" id="box' + n + '" /> <a href="#" class="remove-box">Remove</a></p>');
-        box_html.hide();
-        $('.my-form p.text-box:last').after(box_html);
-        box_html.fadeIn('slow');
-        return false;
-    });
-});
-</script>
-
-<div class="my-form">
-    <form role="form" method="post">
-        <p class="text-box">
-            <label for="box1">Box <span class="box-number">1</span></label>
-            <input type="text" name="boxes[]" value="" id="box1" />
-            <a class="add-box" href="#">Add More</a>
-        </p>
-        <p><input type="submit" value="Submit" /></p>
-    </form>
-</div>

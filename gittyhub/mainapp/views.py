@@ -2,50 +2,84 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
+from .loginform import loginf
 from .repo import getrepo, getjson, getfile, getgit
+import json
 
 #import urllib.request, json, os, requests, redis 
 #from http import cookies
 #from http.client import HTTPSConnection
 #from base64 import b64encode
-from .loginform import loginf
 #from .form2 import MyForm
 
-
-def index(request):
-    #return HttpResponse("Hello, world. You're at the GittyHub index.")
+def index(request): 
+    mylist = []
+    errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+    if 'mylist' in request.session:
+        mylist = request.session['mylist']
+    if 'errorm' in request.session:
+        errorm = request.session['errorm']
     if request.method == 'POST':
-        form = NameForm(request.POST)
-        if form.is_valid():
-            request.session['login'] = form.cleaned_data['login']
-            request.session['passw'] = form.cleaned_data['passw']
-            r = getrepo(form.cleaned_data['getjson'], request)
-            #re = redis.StrictRedis(host='localhost', port=6379, db=0)
-            #commit = getrepo(r["commits_url"])
-            return render(request, 'anwser.html', {'test': r })
-            #return HttpResponse(getrepo(form.cleaned_data['getjson']))
+        form = NameForm()
+        log = loginf()
+        
+        if 'clean' in request.POST: #remove all urls from curent list
+            mylist = []
+            request.session['mylist'] = mylist
+            return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+         
+        if 'add' in request.POST: #add url to list
+            form = NameForm(request.POST)
+            if form.is_valid():
+                mylist.append( form.cleaned_data['getjson'] )
+                request.session['mylist'] = mylist
+                return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+                
+        if 'submit' in request.POST: #Login 
+            log = loginf(request.POST)
+            if log.is_valid():
+                request.session['login'] = log.cleaned_data['login']
+                request.session['passw'] = log.cleaned_data['passw']
+                r = getrepo("https://api.github.com/", request)
+                errorm = ["",""]
+                if 'message' in r():
+                    errorm[0] = "Bad login" 
+                    errorm[1] = "alert alert-danger"
+                    del request.session['login']
+                    del request.session['passw']
+                else:
+                    errorm[0] = "Your loged in" 
+                    errorm[1] = "alert alert-success"
+                request.session['errorm'] = errorm
+                return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+        if 'logout' in request.POST: #logout
+            if 'login' in request.session:
+                del request.session['login']
+            if 'passw' in request.session:  
+                del request.session['passw']
+            errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+            return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+            
+        if 'pop' in request.POST:
+            if mylist:
+                del mylist[-1]
+                #mylist.pop()
+            return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+            
+        if 'getrepo' in request.POST: # load repo list
+            if mylist:
+                r = getrepo(mylist[0], request)
+                return render(request, 'anwser.html', {'test': r })
+            else:
+                 return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+                
+            
+                             
     else:
         form = NameForm()
-    return render(request, 'repo.html', {'form': form})
+        log  = loginf()
+    return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
     
-       
-def setrepo(request):
-    #return HttpResponse("Hello, world. You're at the GittyHub index.")
-    if request.method == 'POST':
-        form = NameForm(request.POST)
-        if form.is_valid():
-            
-            r = getrepo(form.cleaned_data['getjson'], request)
-            return render(request, 'anwser.html', {'test': r })
-            
-            #re = redis.StrictRedis(host='localhost', port=6379, db=0)
-            #commit = getrepo(r["commits_url"])
-            #return HttpResponse(getrepo(form.cleaned_data['getjson']))
-    else:
-        form = NameForm()
-    return render(request, 'repo.html', {'form': form})
-    
-
 def download(request, owner, repo, fork):
     #return render(request, 'holdOn.html', {'repo': repo, 'owner': owner, 'fork': fork})
     url = "https://github.com/" + owner + "/" + repo + "/archive/" + fork + ".zip" 
@@ -65,16 +99,45 @@ def commit(request, owner, repo):
     return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo })
 
 
-
-
-
+#Markesout stuff
+    #return HttpResponse("Hello, world. You're at the GittyHub index.")
+    #r = r.decode("utf-8")
+    #r = json.loads(r) 
+    #mylist.append( form.cleaned_data['getjson'] )
+    #request.session['mylist'] = mylist 
+    #re = redis.StrictRedis(host='localhost', port=6379, db=0)
+    #commit = getrepo(r["commits_url"])
+    #return render(request, 'repo.html', {'form': form, 'mylist': mylist})
+    #return HttpResponse(getrepo(form.cleaned_data['getjson'])) 
 
 #testing stuff
 def thanks(request):
-    bla = request.session.get('fav_color')
-    return HttpResponse(bla)
-    #return HttpResponse(getrepo("https://api.github.com/orgs/octokit/repos"))  
+    
+    #mylist = ["een","twee"]
+    
+    
+    #bla = request.session.get('fav_color')
+    #return HttpResponse(mylist)
+    return HttpResponse(getrepo("https://api.github.com/authorizations", request))  
     #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
+
+"""
+def setrepo(request):
+    #return HttpResponse("Hello, world. You're at the GittyHub index.")
+    if request.method == 'POST':
+        form = NameForm(request.POST)
+        if form.is_valid():
+            
+            r = getrepo(form.cleaned_data['getjson'], request)
+            return render(request, 'anwser.html', {'test': r })
+            
+            #re = redis.StrictRedis(host='localhost', port=6379, db=0)
+            #commit = getrepo(r["commits_url"])
+            #return HttpResponse(getrepo(form.cleaned_data['getjson']))
+    else:
+        form = NameForm()
+    return render(request, 'repo.html', {'form': form})
+"""
 """
 def get_name(request):
     if request.method == 'POST':
@@ -86,33 +149,21 @@ def get_name(request):
 
     return render(request, 'repo.html', {'form': form})
 """
-"""    
-def login(request): 
-            #c = HTTPSConnection("api.github.com")
-            #user = ""
-            #passw= ""
-            #logi = bytes(user + ':' + passw, 'utf-8')
-            #userAndPass = b64encode(logi).decode("ascii")
-            #headers = { 'Authorization' : 'Basic %s' %  userAndPass, 'User-Agent': user }
-            #c.request('GET', '/', headers=headers)
-            #res = c.getresponse()
-            #data = res.read()  
-            #return HttpResponse(data)
-            
-            userName = ""
-            passWord  = ""
-            top_level_url = "https://api.github.com/orgs/octokit/repos"
-    
-            # create an authorization handler
-            p = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-            p.add_password(None, top_level_url, userName, passWord);
-            auth_handler = urllib.request.HTTPBasicAuthHandler(p)
-            opener = urllib.request.build_opener(auth_handler)
-            urllib.request.install_opener(opener)
-            result = opener.open(top_level_url)
-            messages = result.read()
-            #return messages
-            return HttpResponse(messages)
+"""   
+def login(request):      
+    if request.method == 'POST':
+        form = loginf(request.POST)
+        if form.is_valid():
+            request.session['login'] = form.cleaned_data['login']
+            request.session['passw'] = form.cleaned_data['passw']
+            #r = getrepo(form.cleaned_data['getjson'], request)
+            #re = redis.StrictRedis(host='localhost', port=6379, db=0)
+            #commit = getrepo(r["commits_url"])
+            return render(request, 'login.html', {'test': r })
+            #return HttpResponse(getrepo(form.cleaned_data['getjson']))
+    else:
+        form = loginf()
+    return render(request, 'login.html', {'form': form})
 """
 """           
 def myview(request):
@@ -126,4 +177,5 @@ def myview(request):
 """
 
     #https://github.com/DimiLyb/Gittyhub.git
+    
     

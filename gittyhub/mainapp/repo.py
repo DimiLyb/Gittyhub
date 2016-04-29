@@ -14,10 +14,16 @@ from gittyhub import settings
 def getrepo(valu , request):
     #with urllib.request.urlopen(valu, auth=requests.auth.HTTPBasicAuth('', '')) as url: s = url.read()
     #r = getjson(s)
-    login = request.session.get('login')
-    passw = request.session.get('passw')
-    r = requests.get(valu, auth=(login, passw))
-    return r.json
+    a = ""
+    if 'login' in request.session:
+        login = request.session.get('login')
+        passw = request.session.get('passw')
+        r = requests.get(valu, auth=(login, passw))
+        a = r.json
+    else:
+        r = requests.get(valu)
+        a = r.json
+    return a
     
     # byte to json
 def getjson(valu):
