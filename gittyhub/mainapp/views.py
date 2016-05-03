@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
 from .loginform import loginf
-from .repo import getrepo, getjson, getfile, getgit
+from .repo import getrepo, getjson, getfile, getgit, gitlog
 import json
 
 #import urllib.request, json, os, requests, redis 
@@ -18,10 +18,9 @@ def index(request):
         mylist = request.session['mylist']
     if 'errorm' in request.session:
         errorm = request.session['errorm']
+    form = NameForm()
+    log = loginf()
     if request.method == 'POST':
-        form = NameForm()
-        log = loginf()
-        
         if 'clean' in request.POST: #remove all urls from curent list
             mylist = []
             request.session['mylist'] = mylist
@@ -75,12 +74,12 @@ def index(request):
                 return render(request, 'anwser.html', {'test': r })
             else:
                  return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
-                
-            
-                             
-    else:
-        form = NameForm()
-        log  = loginf()
+        if 'rest' in request.POST:
+            request.session.flush()
+            mylist = []
+            errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+            return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+    errorm = ["Please log in to get more requests form the github API","alert alert-info"]
     return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
     
 def download(request, owner, repo, fork):
@@ -121,7 +120,10 @@ def thanks(request):
     
     #bla = request.session.get('fav_color')
     #return HttpResponse(mylist)
-    return HttpResponse(getrepo("https://api.github.com/authorizations", request))  
+    #return HttpResponse(getrepo("https://api.github.com/authorizations", request))
+    #return HttpResponse(gitlog("Gittyhub_DimiLyb")) 
+    lol = gitlog("Gittyhub_DimiLyb")
+    return render(request, 'lol.html', {'lol': lol})
     #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
 
 """

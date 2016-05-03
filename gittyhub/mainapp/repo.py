@@ -7,7 +7,7 @@
 
 import urllib.request, json, zipfile, git, sys, os.path, requests, shutil, platform
 #os, base64, urllib.response, urllib.parse, stat, 
-
+from collections import Counter
 from gittyhub import settings 
 
 
@@ -70,3 +70,27 @@ def set_rw(operation, name, exc):
     return True
 
     #shutil.rmtree('path', onerror=set_rw)
+    
+def gitlog(file_name):
+    g = git.Git(settings.BASE_DIR + "/repos/" +  file_name) 
+    loginfo = g.log('--pretty=tformat:','--numstat')
+    loginfo = loginfo.replace('-	-' , '0	0')
+    loginfo = loginfo.split()
+    bla = len(loginfo)
+    num = -1
+    logbox = []
+    logbox2 = []
+    while (num <= len(loginfo) - 2):
+        temp = [0,0,'']
+        temp[0] = loginfo[num + 1]
+        temp[1] = loginfo[num + 2]
+        temp[2] = loginfo[num + 3]
+        logbox.append(temp)
+        if (temp[1] != 0):
+            if (temp[2] != 0):
+                logbox2.append(temp[2])
+        num = num + 3
+    myDict = Counter(logbox2).most_common(10)
+    #loginfo = g.rev_list('--objects', '--all')
+    return myDict
+    

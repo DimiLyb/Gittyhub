@@ -69,7 +69,7 @@
                 {% bootstrap_form log layout='inline' %}
                 {% buttons %}
                     <button type="submit" name="submit" class="btn btn-primary">
-                        {% bootstrap_icon "log-in" %} login
+                        {% bootstrap_icon "log-in" %} Login
                     </button>
                 {% endbuttons %}
              </form>
@@ -79,7 +79,10 @@
                 {% csrf_token %}
                 {% buttons %}
                     <button type="submit" name="logout" class="btn btn-warning">
-                        {% bootstrap_icon "log-out" %} logout
+                        {% bootstrap_icon "log-out" %} Logout
+                    </button>
+                    <button type="submit" name="rest" class="btn btn-warning">
+                        {% bootstrap_icon "log-out" %} Hard reset
                     </button>
                 {% endbuttons %}
              </form>
