@@ -122,7 +122,7 @@ def thanks(request):
     #return HttpResponse(mylist)
     #return HttpResponse(getrepo("https://api.github.com/authorizations", request))
     #return HttpResponse(gitlog("Gittyhub_DimiLyb")) 
-    lol = gitlog("Gittyhub_DimiLyb")
+    lol = gitlog("octokit.rb_octokit")
     return render(request, 'lol.html', {'lol': lol})
     #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
 
