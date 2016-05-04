@@ -31,6 +31,7 @@ def index(request):
             if form.is_valid():
                 mylist.append( form.cleaned_data['getjson'] )
                 request.session['mylist'] = mylist
+                form = NameForm()
                 return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
                 
         if 'submit' in request.POST: #Login 

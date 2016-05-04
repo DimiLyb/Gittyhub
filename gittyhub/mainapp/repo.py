@@ -10,6 +10,7 @@ import json, zipfile, git, sys, os.path, requests, shutil, platform, urllib.requ
 from collections import Counter
 from gittyhub import settings 
 
+#req = urllib.request
 
 def getrepo(valu , request):
     #with urllib.request.urlopen(valu, auth=requests.auth.HTTPBasicAuth('', '')) as url: s = url.read()

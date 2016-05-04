@@ -1,7 +1,7 @@
 # Gittyhub
-first af all
-!This is a school assignment!
-Please don't judge
+first af all<br />
+!This is a school assignment!<br />
+Please don't judge<br />
 
 requirements:<br />
 python 3.5.1: https://www.python.org/downloads/<br />

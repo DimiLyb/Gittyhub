@@ -30,9 +30,16 @@
             </form>
             <br>
             <u><h4>List of repo's</h4></u>
+            {% if mylist %}
             {% for myl in mylist %}  
                     <ul>{{myl}}</ul>
             {% endfor %}
+            {% endif %}
+            {% if not mylist %}
+                <div class="alert alert-warning">
+                    <p>The list is empty.</p>
+                </div>
+            {% endif %}
             <br>
             <form action="/" method="POST" class="form">
                 {% csrf_token %}
