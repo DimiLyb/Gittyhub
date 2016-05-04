@@ -17,11 +17,18 @@ git 1.7 or newer: https://git-scm.com/
 
 
 pip install Django==1.9.5
+
 pip install django-bootstrap3
+
 pip install gitpython
+
 pip install requests
 
+
 pip3.5 install Django==1.9.5
+
 pip3.5 install django-bootstrap3
+
 pip3.5 install gitpython
+
 pip3.5 install requests
