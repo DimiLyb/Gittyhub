@@ -5,8 +5,8 @@
 #from http.client import HTTPSConnection
 #from base64 import b64encode
 
-import urllib.request, json, zipfile, git, sys, os.path, requests, shutil, platform
-#os, base64, urllib.response, urllib.parse, stat, 
+import json, zipfile, git, sys, os.path, requests, shutil, platform, urllib.request
+#os, base64, urllib.response, urllib.parse, stat, urllib.request,
 from collections import Counter
 from gittyhub import settings 
 
@@ -35,6 +35,9 @@ def getfile(url, file_name):
     plat = platform.system()
     filename = ""
     filename = os.path.join(settings.BASE_DIR + '/repos/zip_download/', file_name)       
+    #response = requests.get(url)
+    #out_file = open(filename, 'wb')
+    #shutil.copyfileobj(response, out_file)
     with urllib.request.urlopen(url) as response, open(filename, 'wb') as out_file:shutil.copyfileobj(response, out_file)
     getunzip(file_name)
     
