@@ -16,6 +16,7 @@
 
 
 {% for proj in test %}
+{% if proj.private != None %}
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading"> 
@@ -29,7 +30,6 @@
     </div>
     <div class="panel-body">
     <div class="container">
-    
     <p>Private: {{ proj.private }}</p>
     <p>Program language: {{ proj.language }}</p>
     <p>Description: {{ proj.description }}</p>
@@ -44,6 +44,23 @@
     <button type="button" class="btn btn-default"><a href="commit/{{ proj.full_name }}" target="_blank">View commits</a></button>
     <button type="button" class="btn btn-default"><a href="jsonMC/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">Most commits on {{ proj.default_branch }}</a></button>
     {% endbuttons %}
+{% endif %}
+{% if proj.private == None %}
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading"> 
+    <h2> <a href={{ proj.html_url }} target="_blank"> Error url </a> 
+    
+    </h2>
+    </div>
+    <div class="panel-body">
+    <div class="container">
+
+    <div class="alert alert-warning">
+        <p>The url in the list is not correct.</p>
+    
+    </div>
+{% endif %}
     <br>
     
     </div>
