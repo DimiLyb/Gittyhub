@@ -50,7 +50,9 @@ def getgit(url, file_name, owner, rep):
     DIR_NAME = settings.BASE_DIR + "/repos/" +  file_name
     REMOTE_URL = url
     message = ["",""]
-    if os.path.isdir(DIR_NAME): 
+    if os.path.isdir(DIR_NAME):
+            #g = git.cmd.Git(git_dir)
+            #g.pull()
             #shutil.rmtree(DIR_NAME, onerror=set_rw)
             message[0] = "Can't download " + owner + "\'s project " + rep + " with git it already exists. Please remove the old version ."
             message[1] = "alert alert-danger"
@@ -64,6 +66,8 @@ def getgit(url, file_name, owner, rep):
             message[1] = "alert alert-success"
     return message
     #https://github.com/octokit/octokit.rb.git
+    #https://api.github.com/repos/DimiLyb/Gittyhub/branches/master
+    #https://api.github.com/repos/DimiLyb/Gittyhub/git/commits/9a6872c89ef865d793e5e439a6fed98e40700f93
     
 def set_rw(operation, name, exc):
     os.chmod(name, stat.S_IWRITE)
@@ -86,11 +90,38 @@ def gitlog(file_name):
         temp[1] = loginfo[num + 2]
         temp[2] = loginfo[num + 3]
         logbox.append(temp)
-        if (temp[1] != 0):
-            if (temp[2] != 0):
+        if (temp[1] >= 0):
+            if (temp[2] >= 0):
                 logbox2.append(temp[2])
         num = num + 3
     myDict = Counter(logbox2).most_common(10)
     #loginfo = g.rev_list('--objects', '--all')
     return myDict
+    
+def logjson(request, user, repo, fork):
+    url = 'https://api.github.com/repos/' + user  + '/' + repo + '/branches/' + fork
+    getsha = getrepo(url, request)
+    #test = getsha()['commit']
+    filesurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + getsha()['commit']['sha']
+    return logloop(request, [] , filesurl)
+    
+def logloop(request, listjson, url):
+    file = getrepo(url, request)
+    #test = listjson
+    for item in file()['files']:
+        #listjson.append("bla")
+        listjson.append(item['filename'])
+    par = file()['parents']
+    if  par:
+        #test  = file()['parents'][0]['sha']
+        #newurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + file()['parents'][0]['sha']
+        newurl = file()['parents'][0]['url']
+        logloop(request, listjson, newurl)
+        
+    else:
+        myDict = Counter(listjson).most_common(10)
+        return myDict
+    myDict = Counter(listjson).most_common(10)
+    return myDict
+    
     

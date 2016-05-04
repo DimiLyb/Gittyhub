@@ -81,9 +81,6 @@
                     <button type="submit" name="logout" class="btn btn-warning">
                         {% bootstrap_icon "log-out" %} Logout
                     </button>
-                    <button type="submit" name="rest" class="btn btn-warning">
-                        {% bootstrap_icon "log-out" %} Hard reset
-                    </button>
                 {% endbuttons %}
              </form>
              {% endif %}
@@ -91,7 +88,31 @@
         </div>
     </div>
 </div>
-
 <br>
+
+<div class="panel-group">
+    <div class="panel panel-default">
+        <div class="panel-heading"><h3> Hard rest</h3> </div>
+        <div class="panel-body">  
+             <form action="/" method="POST" class="log">
+                {% csrf_token %}
+                {% buttons %}
+                    <p> Reset the app (drasstic logoff)</p>
+                    <button type="submit" name="rest" class="btn btn-warning">
+                        {% bootstrap_icon "log-out" %} Hard reset
+                    </button>
+                {% endbuttons %}
+             </form>      
+        </div>
+    </div>
+</div>
+<br>
+
+
+
+
+
+
+
 </div>
 example: https://api.github.com/repos/octokit/octokit.rb
