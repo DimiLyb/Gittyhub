@@ -14,7 +14,8 @@ gitpython: http://gitpython.readthedocs.io/en/stable/intro.html<br />
 <br />
 External software:<br />
 git 1.7 or newer: https://git-scm.com/<br />
-
+<br />
+copy this code: <br />
 pip install Django==1.9.5 <br />
 pip install django-bootstrap3 <br />
 pip install gitpython <br />
@@ -24,3 +25,5 @@ pip3.5 install Django==1.9.5 <br />
 pip3.5 install django-bootstrap3 <br />
 pip3.5 install gitpython <br />
 pip3.5 install requests <br />
+<br />
+or use the installer gittyhub/install<br />
