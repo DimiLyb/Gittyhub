@@ -44,6 +44,12 @@
     <button type="button" class="btn btn-default"><a href="commit/{{ proj.full_name }}" target="_blank">View commits</a></button>
     <button type="button" class="btn btn-default"><a href="jsonMC/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">Most commits on {{ proj.default_branch }}</a></button>
     {% endbuttons %}
+    <br>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>  
 {% endif %}
 {% if proj.private == None %}
 <div class="panel-group">
@@ -59,15 +65,13 @@
     <div class="alert alert-warning">
         <p>The url in the list is not correct.</p>
     </div>
-{% endif %}
-    <br>
+        <br>
     
     </div>
     </div>
     </div>
     </div>
-    </div>
+{% endif %}
 {% endfor %}
-
 <br>
 </div>

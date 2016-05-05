@@ -68,6 +68,12 @@ def index(request):
             
         if 'getrepo' in request.POST: # load repo list
             if mylist:
+                #for item in mylist:
+                for i in xrange(len(mylist)):
+                    varsplit = mylist[i].split('/')
+                    if (len(varsplit) == 5):
+                        if (varsplit[2] != "api.github.com" ):
+                            mylist[i] = "https://api.github.com/repos/" + varsplit[3] + "/" + varsplit[4].replace('.git','')
                 r = []
                 for item in mylist:
                     r.append(getrepo(item, request))
@@ -131,9 +137,11 @@ def thanks(request):
     #return HttpResponse(getrepo("https://api.github.com/authorizations", request))
     #return HttpResponse(gitlog("Gittyhub_DimiLyb")) 
     #lol = gitlog("octokit.rb_octokit")
-    lol = logjson(request, 'DimiLyb', 'Gittyhub', 'master')
-    #return HttpResponse(lol) 
-    return render(request, 'lol.html', {'lol': lol})
+    test = "https://github.com/DimiLyb/Gittyhub"
+    lol = test.split('/')
+    item = "https://api.github.com/repos/" + lol[3] + "/" + lol[4]
+    return HttpResponse(item) 
+    #return render(request, 'lol.html', {'lol': lol})
     #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
 
 """
