@@ -4,7 +4,7 @@ first af all<br />
 Please don't judge<br />
 
 requirements:<br />
-python 3.5.1: https://www.python.org/downloads/<br />
+python 3.5.1 or python 2.7.11: https://www.python.org/downloads/<br />
 <br />
 pip install requirements:<br />
 django 1.9.5: https://www.djangoproject.com/ <br />

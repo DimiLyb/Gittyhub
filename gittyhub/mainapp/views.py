@@ -29,6 +29,7 @@ def index(request):
         if 'add' in request.POST: #add url to list
             form = NameForm(request.POST)
             if form.is_valid():
+                
                 mylist.append( form.cleaned_data['getjson'] )
                 request.session['mylist'] = mylist
                 form = NameForm()
