@@ -128,4 +128,12 @@ def logloop(request, listjson, url):
     myDict = Counter(listjson).most_common(10)
     return myDict
     
+def mylistcheck(mylist):
+    for i in xrange(len(mylist)):
+        varsplit = mylist[i].split('/')
+        if (len(varsplit) == 5):
+            if (varsplit[2] != "api.github.com" ):
+                mylist[i] = "https://api.github.com/repos/" + varsplit[3] + "/" + varsplit[4].replace('.git','')
+    return mylist
+    
     

@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
 from .loginform import loginf
-from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson
+from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck
 import json
 
 #import urllib.request, json, os, requests, redis 
@@ -68,12 +68,7 @@ def index(request):
             
         if 'getrepo' in request.POST: # load repo list
             if mylist:
-                #for item in mylist:
-                for i in xrange(len(mylist)):
-                    varsplit = mylist[i].split('/')
-                    if (len(varsplit) == 5):
-                        if (varsplit[2] != "api.github.com" ):
-                            mylist[i] = "https://api.github.com/repos/" + varsplit[3] + "/" + varsplit[4].replace('.git','')
+                mylist = mylistcheck(mylist)
                 r = []
                 for item in mylist:
                     r.append(getrepo(item, request))
