@@ -52,8 +52,13 @@
                         {% bootstrap_icon "remove" %} remove last entry
                     </button>
                     <button type="submit" name="getrepo" class="btn btn-primary">
-                        {% bootstrap_icon "ok" %} Get repo's
+                        {% bootstrap_icon "ok" %} Get repo's fron list
                     </button>
+                    {% if err.0 == "Your loged in" %}
+                    <button type="submit" name="myrepo" class="btn btn-primary">
+                        {% bootstrap_icon "ok" %} View own repo's
+                    </button>
+                    {% endif %}
                     </div>
                 {% endbuttons %}
             </form>

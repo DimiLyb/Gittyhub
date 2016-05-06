@@ -11,11 +11,11 @@
 </a>
 <h1>GittyHub</h1>
 
-<p>Number of requested repo's: {{test|length}}</p>
+<p>Number of requested repo's: {{r|length}}</p>
 </div>
 
 
-{% for proj in test %}
+{% for proj in r %}
 {% if proj.private != None %}
 <div class="panel-group">
     <div class="panel panel-default">

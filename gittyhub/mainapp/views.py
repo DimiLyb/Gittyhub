@@ -29,9 +29,9 @@ def index(request):
         if 'add' in request.POST: #add url to list
             form = NameForm(request.POST)
             if form.is_valid():
-                
                 mylist.append( form.cleaned_data['getjson'] )
                 request.session['mylist'] = mylist
+                log = loginf()
                 form = NameForm()
                 return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
                 
@@ -52,18 +52,28 @@ def index(request):
                     errorm[1] = "alert alert-success"
                 request.session['errorm'] = errorm
                 return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
+        
         if 'logout' in request.POST: #logout
             if 'login' in request.session:
                 del request.session['login']
             if 'passw' in request.session:  
                 del request.session['passw']
-            errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+                errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+            if 'errorm' in request.session:
+                request.session['errorm'] = errorm
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
             
-        if 'pop' in request.POST:
+        if 'myrepo' in request.POST: #view own repo
+            if 'login' in request.session:
+                user = request.session['login']
+                url = 'https://api.github.com/users/' + user + '/repos'
+                r = getrepo(url, request)
+                return render(request, 'anwser.html', {'r': r })
+            
+        if 'pop' in request.POST: #remove last add
             if mylist:
                 del mylist[-1]
-                #mylist.pop()
+                request.session['mylist'] = mylist
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
             
         if 'getrepo' in request.POST: # load repo list
@@ -72,21 +82,20 @@ def index(request):
                 r = []
                 for item in mylist:
                     r.append(getrepo(item, request))
-                    
-                #r = getrepo(mylist[0], request)
-                return render(request, 'anwser.html', {'test': r })
+                return render(request, 'anwser.html', {'r': r })
             else:
                  return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
-        if 'rest' in request.POST:
+        
+        if 'rest' in request.POST: #flush session
             request.session.flush()
             mylist = []
             errorm = ["Please log in to get more requests form the github API","alert alert-info"]
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
-    errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+                     
+    #errorm = ["Please log in to get more requests form the github API","alert alert-info"]
     return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
     
 def download(request, owner, repo, fork):
-    #return render(request, 'holdOn.html', {'repo': repo, 'owner': owner, 'fork': fork})
     url = "https://github.com/" + owner + "/" + repo + "/archive/" + fork + ".zip" 
     name = repo + "_" + owner + ".zip"
     getfile(url, name)
