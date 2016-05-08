@@ -127,6 +127,28 @@ def logloop(request, listjson, url):
         return myDict
     myDict = Counter(listjson).most_common(10)
     return myDict
+
+def commitjson(request, user, repo, fork):
+    url = 'https://api.github.com/repos/' + user  + '/' + repo + '/branches/' + fork
+    getsha = getrepo(url, request)
+    #test = getsha()['commit']
+    filesurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + getsha()['commit']['sha']
+    return commitloop(request, [] , filesurl)
+
+def commitloop(request, listjson, url):
+    file = getrepo(url, request)
+    #test = listjson
+    listjson.append(file)
+    par = file()['parents']
+    if  par:
+        #test  = file()['parents'][0]['sha']
+        #newurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + file()['parents'][0]['sha']
+        newurl = file()['parents'][0]['url']
+        commitloop(request, listjson, newurl)
+        
+    else:
+        return listjson
+    return listjson
     
 def mylistcheck(mylist):
     for i in xrange(len(mylist)):

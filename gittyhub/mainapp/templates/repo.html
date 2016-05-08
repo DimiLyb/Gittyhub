@@ -1,5 +1,5 @@
 {% load staticfiles %}
-<script type="text/javascript" src="{{ STATIC_URL }}jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}static/jquery-1.12.3.min.js"></script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -7,10 +7,8 @@
 
 
 <link rel="shortcut icon" href="{%  static 'gitty.png' %}">
-
-
-
 <div style="background: black; padding: 10px 10px 10px 10px;">
+
 <div class="jumbotron">   
     <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
     <h1>GittyHub</h1>
@@ -20,7 +18,7 @@
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading"> <h3>Add repo's from github</h3></div>
-        <div class="panel-body">     
+        <div class="panel-body">   
             <form action="/" method="POST" class="form">    
                 {% csrf_token %}
                 {% bootstrap_form form layout='inline' %}
@@ -43,6 +41,8 @@
                 </div>
             {% endif %}
             <br>
+            
+            
             <form action="/" method="POST" class="form">
                 {% csrf_token %}
                 {% buttons %}
@@ -73,8 +73,9 @@
         <div class="panel-heading"><h3> Login to github</h3> </div>
         <div class="panel-body">  
              {% if err %}
-             <div class="{{err.1}}">
-                <p>{{err.0}}.</p>
+             <div class="{{err.1}} alert-dismissible" role="alert">
+                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                 <p>{{err.0}}.</p>
              </div>
              {% endif %}
              {% if err.0 != "Your loged in" %}
@@ -98,19 +99,21 @@
                 {% endbuttons %}
              </form>
              {% endif %}
-             
         </div>
     </div>
 </div>
 <br>
 
 <div class="panel-group" >
-    <div class="panel panel-default">
+    <div class="panel panel-warning">
         <div class="panel-heading">
-            <h3 > 
+            <h3 class="panel-title"> 
+                <a data-toggle="collapse" href="#collapse1">
                 Hard reset
+                </a>
              </h3> 
         </div>
+        <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body">  
              <form action="/" method="POST" class="log">
                 {% csrf_token %}
@@ -121,6 +124,7 @@
                     </button>
                 {% endbuttons %}
              </form>      
+        </div>
         </div>
     </div>
 </div>

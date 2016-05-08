@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
 from .loginform import loginf
-from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck
+from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck, commitjson
 import json
 
 #import urllib.request, json, os, requests, redis 
@@ -116,6 +116,9 @@ def jsonMC(request, owner, repo, fork):
     lol = logjson(request, owner, repo, fork)
     return render(request, 'lol.html', {'lol': lol})
     
+def allcommit(request, owner, repo, fork):
+    c = commitjson(request, owner, repo, fork)
+    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo})   
 
 #Markesout stuff
     #return HttpResponse("Hello, world. You're at the GittyHub index.")
@@ -141,11 +144,15 @@ def thanks(request):
     #return HttpResponse(getrepo("https://api.github.com/authorizations", request))
     #return HttpResponse(gitlog("Gittyhub_DimiLyb")) 
     #lol = gitlog("octokit.rb_octokit")
-    test = "https://github.com/DimiLyb/Gittyhub"
-    lol = test.split('/')
-    item = "https://api.github.com/repos/" + lol[3] + "/" + lol[4]
-    return HttpResponse(item) 
-    #return render(request, 'lol.html', {'lol': lol})
+    #test = "https://github.com/DimiLyb/Gittyhub"
+    #lol = test.split('/')
+    #item = "https://api.github.com/repos/" + lol[3] + "/" + lol[4]
+    #return HttpResponse(item)
+    owner = "DimiLyb" 
+    repo = "GittyHub"
+    fork = "master"
+    c = commitjson(request, owner, repo, fork)
+    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo})
     #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
 
 """

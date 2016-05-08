@@ -1,10 +1,13 @@
+{% load staticfiles %}
+<script type="text/javascript" src="http://127.0.0.1:8000/static/jquery-1.12.3.min.js"></script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-{% load staticfiles %}
+
 <link rel="shortcut icon" href="{%  static 'gitty.png' %}">
 <div style="background: black; padding: 10px 10px 10px 10px;">
+
 <div class="jumbotron">
 <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
 <h1>GittyHub</h1>
@@ -14,28 +17,92 @@
 <div class="panel-group">
     <div class="panel panel-default">
       <div class="panel-heading">
-
-<h2> <a href={{ proj.html_url }} target="_blank"> {{ repo }} </a> 
-    <small> 
-        <a href={{ proj.html_url }} target="_blank"> 
-            {{ owner }} 
-        </a>
-    </small> 
-</h2>
+        <h2>  
+            <a href="https://github.com/{{ owner }}/{{ repo }}" target="_blank"> 
+                {{ repo }} 
+            </a> 
+            <small> 
+                <a href="https://github.com/{{ owner }}" target="_blank"> 
+                    {{ owner }} 
+                </a>
+            </small> 
+        </h2>
       </div>
       <div class="panel-body">
-<div class="container">
-<ul>
-{% for com in commit %}  
-    <p>message: {{ com.commit.message }}</p>
-    <p>author: {{ com.commit.author.name }}</p>
-    <p>date: {{ com.commit.author.date }}</p>
-    <p>sha: {{ com.sha }}</p>
-    <br>
-{% endfor %}
-</ul>
-</div>
-</div>
+        <div class="container">
+            <ul>
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            {% for com in commit %}
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <a data-toggle="collapse" href="#collapse{{ forloop.counter }}">
+                                        {{ com.commit.message }}
+                                    </a>
+                                </h3>
+                            </div>
+                            <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="container">
+                                    <p>author: {{ com.commit.author.name }}</p>
+                                    <p>date: {{ com.commit.author.date }}</p>
+                                    <p>sha: {{ com.sha }}</p>
+                                    
+                                    {% if com.stats.total %}
+                         
+                                    <div class="panel-group col-xs-8" >
+                                        <div class="panel panel-default">
+                                                
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">
+                                                        <a data-toggle="collapse" href="#collapsest">
+                                                            Stats
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                                <div id="collapsest" class="panel-collapse collapse">
+                                                    <div class="panel-body">
+                                                        <div class="container">
+                                                            Additions: {{ com.stats.additions }}<br />
+                                                            Deletions: {{ com.stats.deletions }}<br />
+                                                            Total: {{ com.stats.total }}<br />
+                                                        </div>
+                                                     </div> 
+                                                </div> 
+                                        </div>
+                                    </div>
+                                            
+                                    <u><h4 class="col-xs-8">List of repo's</h4></u>
+                                               
+                                    <div class="panel-group col-xs-8" >
+                                        <div class="panel panel-default">
+                                            {% for file in com.files %}
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">
+                                                            {{ file.filename }}
+                                                    </h3>
+                                                </div>
+                                                    <div class="panel-body">
+                                                        <div class="container">
+                                                            Additions: {{ file.additions }}<br />
+                                                            Deletions: {{ file.deletions }}<br />
+                                                            Changes: {{ file.changes }}<br />
+                                                        </div>
+                                                     </div> 
+                                               {% endfor %} 
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    
+                                </div>
+                            </div> 
+                            </div> 
+                            {% endfor %}     
+                        </div>
+                    </div>
+            </ul>
+        </div>
+      </div>
     </div>
 </div>
 <br>

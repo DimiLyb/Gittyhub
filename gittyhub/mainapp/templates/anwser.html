@@ -1,8 +1,10 @@
+{% load staticfiles %}
+<script type="text/javascript" src="{{ STATIC_URL }}static/jquery-1.12.3.min.js"></script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-{% load staticfiles %}
+
 <link rel="shortcut icon" href="{%  static 'gitty.png' %}">
 <div style="background: black; padding: 10px 10px 10px 10px;">
 <div class="jumbotron">
@@ -39,10 +41,11 @@
     <p>Repo id: {{ proj.id }}</p>
     {% buttons %}
     <div class="btn-group">
-    <button type="button" class="btn btn-default"><a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">Download default branch: {{ proj.default_branch }}</a></button>
-    <button type="button" class="btn btn-default"><a href="downloadgit/{{ proj.full_name }}" target="_blank">Download with git</a></button>
-    <button type="button" class="btn btn-default"><a href="commit/{{ proj.full_name }}" target="_blank">View commits</a></button>
-    <button type="button" class="btn btn-default"><a href="jsonMC/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank">Most commits on {{ proj.default_branch }}</a></button>
+    <a href="download/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank" role="button" class="btn btn-default">Download default branch: {{ proj.default_branch }}</a>
+    <a href="downloadgit/{{ proj.full_name }}" target="_blank" role="button" class="btn btn-default">Download with git</a>
+    <a href="commit/{{ proj.full_name }}" target="_blank" role="button" class="btn btn-default">View last 30 commits</a>
+    <a href="allcommit/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank" role="button" class="btn btn-default">View all commits</a>
+    <a href="jsonMC/{{ proj.full_name }}/{{ proj.default_branch }}" target="_blank" role="button" class="btn btn-default">Most commits on {{ proj.default_branch }}</a>
     {% endbuttons %}
     <br>
     </div>
@@ -51,9 +54,31 @@
     </div>
     </div>  
 {% endif %}
-{% if proj.private == None %}
+{% if proj.documentation_url == "https://developer.github.com/v3/#rate-limiting" %}
 <div class="panel-group">
-    <div class="panel panel-default">
+    <div class="panel panel-danger">
+        <div class="panel-heading"> 
+    <h2>
+        Max requests reached
+    </h2>
+        </div>
+    <div class="panel-body">
+    <div class="container">
+
+    <div class="alert alert-warning">
+        <p>60 requests an hour have been reached.
+           Please log in with your github account for 5000 requests an hour </p>
+    </div>
+        <br>
+    
+    </div>
+    </div>
+    </div>
+    </div>
+{% endif %}
+{% if proj.private == None and proj.documentation_url == None %}
+<div class="panel-group">
+    <div class="panel panel-warning">
         <div class="panel-heading"> 
     <h2>
         Error url
