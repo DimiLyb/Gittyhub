@@ -16,14 +16,17 @@ def getrepo(valu , request):
     #with urllib.request.urlopen(valu, auth=requests.auth.HTTPBasicAuth('', '')) as url: s = url.read()
     #r = getjson(s)
     a = ""
-    if 'login' in request.session:
-        login = request.session.get('login')
-        passw = request.session.get('passw')
-        r = requests.get(valu, auth=(login, passw))
-        a = r.json
-    else:
-        r = requests.get(valu)
-        a = r.json
+    try:
+        if 'login' in request.session:
+            login = request.session.get('login')
+            passw = request.session.get('passw')
+            r = requests.get(valu, auth=(login, passw))
+            a = r.json
+        else:
+            r = requests.get(valu)
+            a = r.json
+    except:
+            a = ["{'nope': nada }"]
     return a
     
     # byte to json
@@ -133,21 +136,27 @@ def commitjson(request, user, repo, fork):
     getsha = getrepo(url, request)
     #test = getsha()['commit']
     filesurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + getsha()['commit']['sha']
-    return commitloop(request, [] , filesurl)
+    return commitloop(request, [] , filesurl, 1)
+    
+def commitjsonnext(request, user, repo, sha):
+    filesurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + sha
+    return commitloop(request, [] , filesurl, 1)
 
-def commitloop(request, listjson, url):
-    file = getrepo(url, request)
-    #test = listjson
-    listjson.append(file)
-    par = file()['parents']
-    if  par:
-        #test  = file()['parents'][0]['sha']
-        #newurl = 'https://api.github.com/repos/' + user  + '/' + repo + '/commits/' + file()['parents'][0]['sha']
-        newurl = file()['parents'][0]['url']
-        commitloop(request, listjson, newurl)
-        
-    else:
-        return listjson
+def commitloop(request, listjson, url, loop):
+    try:
+        file = getrepo(url, request)
+        listjson.append(file)
+        par = file()['parents']
+        if (loop == 32):
+            return listjson
+        if  par:
+            newurl = file()['parents'][0]['url']
+            loop = loop +1
+            commitloop(request, listjson, newurl, loop)
+        else:
+            return listjson
+    except:
+        return listjson            
     return listjson
     
 def mylistcheck(mylist):

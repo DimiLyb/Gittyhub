@@ -1,5 +1,6 @@
 {% load staticfiles %}
 <script type="text/javascript" src="http://127.0.0.1:8000/static/jquery-1.12.3.min.js"></script>
+<script> function goBack() { window.history.back();} </script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
@@ -31,6 +32,13 @@
       <div class="panel-body">
         <div class="container">
             <ul>
+                {%if sha %}
+                <P>
+                    <button onclick="goBack()" class="btn btn-default">{% bootstrap_icon "arrow-left" %} Back</button>
+                    <a href="/allcommitnext/{{owner}}/{{repo}}/{{sha}}" role="button" class="btn btn-default">Next {% bootstrap_icon "arrow-right" %}</a>
+                </P>
+                {% endif %}
+                 
                     <div class="panel-group">
                         <div class="panel panel-default">
                             {% for com in commit %}
@@ -49,18 +57,14 @@
                                     <p>sha: {{ com.sha }}</p>
                                     
                                     {% if com.stats.total %}
-                         
                                     <div class="panel-group col-xs-8" >
                                         <div class="panel panel-default">
                                                 
                                                 <div class="panel-heading">
                                                     <h3 class="panel-title">
-                                                        <a data-toggle="collapse" href="#collapsest">
                                                             Stats
-                                                        </a>
                                                     </h3>
                                                 </div>
-                                                <div id="collapsest" class="panel-collapse collapse">
                                                     <div class="panel-body">
                                                         <div class="container">
                                                             Additions: {{ com.stats.additions }}<br />
@@ -68,11 +72,10 @@
                                                             Total: {{ com.stats.total }}<br />
                                                         </div>
                                                      </div> 
-                                                </div> 
                                         </div>
                                     </div>
                                             
-                                    <u><h4 class="col-xs-8">List of repo's</h4></u>
+                                    <u><h4 class="col-xs-8">List of changed file's</h4></u>
                                                
                                     <div class="panel-group col-xs-8" >
                                         <div class="panel panel-default">
@@ -93,13 +96,16 @@
                                         </div>
                                     </div>
                                     {% endif %}
-                                    
                                 </div>
                             </div> 
-                            </div> 
-                            {% endfor %}     
+                            </div>
+                            {% endfor %}  
                         </div>
                     </div>
+                    {%if sha %}
+                    <button onclick="goBack()" class="btn btn-default">{% bootstrap_icon "arrow-left" %} Back</button>
+                    <a href="/allcommitnext/{{owner}}/{{repo}}/{{sha}}" role="button" class="btn btn-default">Next {% bootstrap_icon "arrow-right" %}</a>
+                    {% endif %}
             </ul>
         </div>
       </div>

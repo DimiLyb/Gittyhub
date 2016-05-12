@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
 from .loginform import loginf
-from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck, commitjson
+from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck, commitjson, commitjsonnext
 import json
 
 #import urllib.request, json, os, requests, redis 
@@ -13,7 +13,7 @@ import json
 
 def index(request): 
     mylist = []
-    errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+    errorm = ["Please log in to get more requests form the github API","info"]
     if 'mylist' in request.session:
         mylist = request.session['mylist']
     if 'errorm' in request.session:
@@ -43,13 +43,13 @@ def index(request):
                 r = getrepo("https://api.github.com/", request)
                 errorm = ["",""]
                 if 'message' in r():
-                    errorm[0] = "Bad login" 
-                    errorm[1] = "alert alert-danger"
+                    errorm[0] = "User and/or password are incorrect" 
+                    errorm[1] = "danger"
                     del request.session['login']
                     del request.session['passw']
                 else:
                     errorm[0] = "Your loged in" 
-                    errorm[1] = "alert alert-success"
+                    errorm[1] = "success"
                 request.session['errorm'] = errorm
                 return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
         
@@ -58,7 +58,7 @@ def index(request):
                 del request.session['login']
             if 'passw' in request.session:  
                 del request.session['passw']
-                errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+                errorm = ["Please log in to get more requests form the github API","info"]
             if 'errorm' in request.session:
                 request.session['errorm'] = errorm
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
@@ -89,7 +89,7 @@ def index(request):
         if 'rest' in request.POST: #flush session
             request.session.flush()
             mylist = []
-            errorm = ["Please log in to get more requests form the github API","alert alert-info"]
+            errorm = ["Please log in to get more requests form the github API","info"]
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
                      
     #errorm = ["Please log in to get more requests form the github API","alert alert-info"]
@@ -118,7 +118,19 @@ def jsonMC(request, owner, repo, fork):
     
 def allcommit(request, owner, repo, fork):
     c = commitjson(request, owner, repo, fork)
-    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo})   
+    nextsha = ""
+    if (len(c) == 32): 
+        nextsha = c[31]
+        nextsha = nextsha()["parents"][0]["sha"]
+    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo, 'sha': nextsha})  
+    
+def allcommitnext(request, owner, repo, sha):
+    c = commitjsonnext(request, owner, repo, sha)
+    nextsha = ""
+    if (len(c) == 32): 
+        nextsha = c[31]
+        nextsha = nextsha()["parents"][0]["sha"]
+    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo, 'sha': nextsha})
 
 #Markesout stuff
     #return HttpResponse("Hello, world. You're at the GittyHub index.")
