@@ -5,13 +5,15 @@
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
 
-
 <link rel="shortcut icon" href="{%  static 'gitty.png' %}">
 <div style="background: black; padding: 10px 10px 10px 10px;">
 
-<div class="jumbotron">   
+<div class="jumbotron">
+    <!--{% load static from staticfiles %}
+    {% static 'gitty.png' as myphoto %}
+    <img src="{{ myphoto }}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>-->
     <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>
-    <h1>GittyHub</h1>
+    <h1>GittyHub</h1><br\>
 </div>
 
 
@@ -137,7 +139,7 @@
 
 
 </div>
-example input: 
-https://api.github.com/repos/octokit/octokit.rb
-https://github.com/octokit/octokit.rb
-https://github.com/octokit/octokit.rb.git
+example input: <br>
+https://api.github.com/repos/octokit/octokit.rb<br>
+https://github.com/octokit/octokit.rb<br>
+https://github.com/octokit/octokit.rb.git<br>

@@ -13,10 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
 from mainapp import views as mainapp_views
 #from django.views.generic.base import RedirectView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', mainapp_views.index),
@@ -29,7 +31,7 @@ urlpatterns = [
     url(r'^jsonMC/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<fork>[\w|\W]+)/$', mainapp_views.jsonMC),
     url(r'^allcommit/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<fork>[\w|\W]+)/$', mainapp_views.allcommit),
     url(r'^allcommitnext/(?P<owner>[\w|\W]+)/(?P<repo>[\w|\W]+)/(?P<sha>[\w|\W]+)/$', mainapp_views.allcommitnext),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 #old urls
     #url(r'^download/(?P<owner>[-\w]+)/(?P<repo>\w+)/(?P<fork>\w+)/$', 'mainapp.views.download'),
