@@ -1,12 +1,12 @@
 {% load staticfiles %}
-<script type="text/javascript" src="{{ STATIC_URL }}static/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="http://127.0.0.1:8000/static/jquery-1.12.3.min.js"></script>
 {% load bootstrap3 %}
 {% bootstrap_css %}
 {% bootstrap_javascript %}
 {% bootstrap_messages %}
-
+<link rel="stylesheet" type="text/css" href="http://127.0.0.1:8000/static/css.css">
 <link rel="shortcut icon" href="{%  static 'gitty.png' %}">
-<div style="background: black; padding: 10px 10px 10px 10px;">
+<div>
 
 <div class="jumbotron">   
     <img src="{% static 'gitty.png' %}" alt="Gitty" class="img-circle" style="width:75px;height:75px; float:left;"/>

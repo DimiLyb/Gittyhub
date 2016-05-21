@@ -13,7 +13,7 @@ import json
 
 def index(request): 
     mylist = []
-    errorm = ["Please log in to get more requests form the github API","info"]
+    errorm = ["Please log in to github to get access to the aplication","info"]
     if 'mylist' in request.session:
         mylist = request.session['mylist']
     if 'errorm' in request.session:
@@ -58,7 +58,7 @@ def index(request):
                 del request.session['login']
             if 'passw' in request.session:  
                 del request.session['passw']
-                errorm = ["Please log in to get more requests form the github API","info"]
+                errorm = ["Please log in to github to get access to the aplication","info"]
             if 'errorm' in request.session:
                 request.session['errorm'] = errorm
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
@@ -89,7 +89,7 @@ def index(request):
         if 'rest' in request.POST: #flush session
             request.session.flush()
             mylist = []
-            errorm = ["Please log in to get more requests form the github API","info"]
+            errorm = ["Please log in to github to get access to the aplication","info"]
             return render(request, 'repo.html', {'form': form, 'mylist': mylist, 'log': log, 'err': errorm})
                      
     #errorm = ["Please log in to get more requests form the github API","alert alert-info"]
