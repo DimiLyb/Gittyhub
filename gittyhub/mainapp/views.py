@@ -3,9 +3,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from .forms import NameForm
 from .loginform import loginf
-from .repo import getrepo, getjson, getfile, getgit, gitlog, logjson, mylistcheck, commitjson, commitjsonnext
+from .repo import getrepo, getjson, getfile, logjson, mylistcheck, commitjson, commitjsonnext
 import json
 
+#getgit, gitlog,
 #import urllib.request, json, os, requests, redis 
 #from http import cookies
 #from http.client import HTTPSConnection
@@ -100,12 +101,6 @@ def download(request, owner, repo, fork):
     name = repo + "_" + owner + ".zip"
     getfile(url, name)
     return render(request, 'download.html', {'repo': repo, 'owner': owner, 'fork': fork})
-    
-def downloadgit(request, owner, repo):
-    url = "https://github.com/" + owner + "/" + repo + ".git" 
-    name = repo + "_" + owner
-    messages = getgit(url, name, owner, repo)
-    return render(request, 'downloadgit.html', {'mess': messages})    
 
 def commit(request, owner, repo):
     urlcommit = "https://api.github.com/repos/" + owner + "/" + repo + "/commits"
@@ -132,6 +127,13 @@ def allcommitnext(request, owner, repo, sha):
         nextsha = nextsha()["parents"][0]["sha"]
     return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo, 'sha': nextsha})
 
+"""    
+def downloadgit(request, owner, repo):
+    url = "https://github.com/" + owner + "/" + repo + ".git" 
+    name = repo + "_" + owner
+    messages = getgit(url, name, owner, repo)
+    return render(request, 'downloadgit.html', {'mess': messages})    
+"""
 #Markesout stuff
     #return HttpResponse("Hello, world. You're at the GittyHub index.")
     #r = r.decode("utf-8")
@@ -163,9 +165,9 @@ def thanks(request):
     owner = "DimiLyb" 
     repo = "GittyHub"
     fork = "master"
-    c = commitjson(request, owner, repo, fork)
-    return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo})
-    #return HttpResponse(os.path.dirname(os.path.abspath(__file__)))
+    c = logjson(request, owner, repo, fork)
+    #return render(request, 'commit.html', {'commit': c, 'owner': owner, 'repo': repo})
+    return HttpResponse(c)
 
 """
 def setrepo(request):
